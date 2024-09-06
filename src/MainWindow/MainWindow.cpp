@@ -13,18 +13,16 @@
 //** TO-DO create some env variable
 #include "src/shapes/shape.hpp"
 #include "src/canvas/canvas.hpp"
+#include "src/commandConsole/commandConsole.hpp"
 
 class MainWindow : public QWidget {
     Q_OBJECT
 public:
     MainWindow() {
         // canvas.setFixedSize(500, 500);  // Set a fixed size
-        canvas.addShape(new Line());
-        canvas.addShape(new Triangle());
-
-        // Set up the command console
-        commandConsole.setPlaceholderText("Enter command here...");
-
+        // canvas.addShape(new Line());
+        // canvas.addShape(new Triangle());
+        connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
         // Set up the log window
         logWindow.setReadOnly(true);
 
@@ -40,7 +38,7 @@ public:
 private:
     QVBoxLayout mainLayout;
     Canvas canvas;
-    QLineEdit commandConsole;
+    CommandConsole commandConsole;
     QTextEdit logWindow;
 };
 
@@ -51,10 +49,6 @@ int main(int argc, char **argv)
     MainWindow main;
     Canvas canvas;
 
-
-    canvas.addShape(new Line());
-        
-    canvas.addShape(new Triangle());
     main.show();
 
     return app.exec();

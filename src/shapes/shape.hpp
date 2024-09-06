@@ -3,32 +3,41 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QPointF>
+#include <QString>
+#include <QVector>
 
+struct ShapeInfo {
+    QString shape_type;
+    QString name;
+    QVector<QPointF> coordinates;
+};
 
-// ** TO-DO Replace QWidget with QPaint device
 class Shape {
 public:
-    virtual void draw(QWidget* canvas) = 0;
-public:
+    Shape(const ShapeInfo &info);
+    virtual void draw(QPainter* painter) = 0;
     virtual ~Shape() = default;
 protected:
-    std::string obj_name;
+    ShapeInfo shapeInfo;
 };
 
 class Line : public Shape {
 public:
-    void draw(QWidget* canvas) override;
-
+    Line(const ShapeInfo &info);
+    void draw(QPainter* painter) override;
 };
 
 class Triangle : public Shape {
 public:
-    void draw(QWidget* canvas) override;
+    Triangle(const ShapeInfo &info);
+    void draw(QPainter* painter) override;
 };
 
 class Rectangle : public Shape {
 public:
-    void draw(QWidget* canvas) override;
+    Rectangle(const ShapeInfo &info);
+    void draw(QPainter* painter) override;
 };
 
 #endif // SHAPE_HPP
