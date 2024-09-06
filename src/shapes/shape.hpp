@@ -40,4 +40,10 @@ public:
     void draw(QPainter* painter) override;
 };
 
+class Square : public Shape {
+public:
+    Square(const ShapeInfo &info);
+    void draw(QPainter* painter) override;
+};
+
 #endif // SHAPE_HPP

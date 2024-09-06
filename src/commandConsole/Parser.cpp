@@ -10,9 +10,9 @@ ShapeInfo Parser::parseCommand(const QString& command) {
     } else if (tokens[0] == "create_rectangle") {
         return parseRectangle(tokens);
     }
-    // else if (tokens[0] == "create_square") {
-    //     return parseSquare(tokens);
-    // }
+    else if (tokens[0] == "create_square") {
+        return parseSquare(tokens);
+    }
     else {
         return ShapeInfo();
     }
@@ -58,15 +58,15 @@ ShapeInfo Parser::parseRectangle(const QStringList& tokens) {
     }
 }
 
-// Square* Parser::parseSquare(const QStringList& tokens) {
-//     QString name = tokens[2];
-//     QPointF coord1 = parsePoint(tokens[4]);
-//     QPointF coord2 = parsePoint(tokens[6]);
-//     if (tokens.size() > 7) {
-//         QPointF coord3 = parsePoint(tokens[8]);
-//         QPointF coord4 = parsePoint(tokens[10]);
-//         return new Square(name, coord1, coord2, coord3, coord4);
-//     } else {
-//         return new Square(name, coord1, coord2);
-//     }
-// }
+ShapeInfo Parser::parseSquare(const QStringList& tokens) {
+    QString name = tokens[2];
+    QPointF coord1 = parsePoint(tokens[4]);
+    QPointF coord2 = parsePoint(tokens[6]);
+    if (tokens.size() > 7) {
+        QPointF coord3 = parsePoint(tokens[8]);
+        QPointF coord4 = parsePoint(tokens[10]);
+        return {"square", name, QVector<QPointF>{coord1, coord2, coord3, coord4}};
+    } else {
+        return {"square", name, QVector<QPointF>{coord1, coord2}};
+    }
+}

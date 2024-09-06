@@ -22,9 +22,9 @@ void Canvas::addShape(const ShapeInfo &info) {
     } else if (info.shape_type == "rectangle") {
         shape = new Rectangle(info);
     }
-    // else if (info.shape_type == "square") {
-    //     shape = new Square(info.name, info.coordinates[0], info.coordinates[1], info.coordinates[2], info.coordinates[3]);
-    // }
+    else if (info.shape_type == "square") {
+        shape = new Square(info);
+    }
 
     if (shape != nullptr) {
         shapes.append(shape);
