@@ -9,6 +9,7 @@ class Canvas : public QWidget {
     Q_OBJECT
 public:
     Canvas();
+    ~Canvas();
 public slots:
     void addShape(const ShapeInfo &info);
     void paintEvent(QPaintEvent *event) override;

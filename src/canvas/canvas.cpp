@@ -38,3 +38,9 @@ void Canvas::paintEvent(QPaintEvent *event) {
         shape->draw(&painter);
     }
 }
+
+Canvas::~Canvas() {
+    for (Shape* shape : shapes) {
+        delete shape;
+    }
+}
