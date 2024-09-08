@@ -59,9 +59,6 @@ void Rectangle::draw(QPainter* painter) {
     }
 }
 
-QPointF Rectangle::center() const {
-    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
-}
 
 Square::Square(const ShapeInfo &info) : Shape(info) {}
 
@@ -87,6 +84,26 @@ void Square::draw(QPainter* painter) {
     }
 }
 
+QPointF Rectangle::center() const {
+    if(shapeInfo.coordinates.size() == 2) {
+        return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
+    }
+    else if(shapeInfo.coordinates.size() == 4) {
+        QPointF topLeft = shapeInfo.coordinates[0];
+        QPointF bottomRight = shapeInfo.coordinates[2];
+        return (topLeft + bottomRight) / 2;
+    }
+    return QPointF();
+}
+
 QPointF Square::center() const {
-    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
+    if(shapeInfo.coordinates.size() == 2) {
+        return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
+    }
+    else if(shapeInfo.coordinates.size() == 4) {
+        QPointF topLeft = shapeInfo.coordinates[0];
+        QPointF bottomRight = shapeInfo.coordinates[2];
+        return (topLeft + bottomRight) / 2;
+    }
+    return QPointF();
 }

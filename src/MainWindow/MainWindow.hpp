@@ -18,10 +18,6 @@ private:
     Canvas canvas;
     CommandConsole commandConsole;
     LogWindow logWindow;
-private slots:
-    void onFileAction();
-
-    void onHelpAction();
 };
 
 #endif // MAINWINDOW_HPP
