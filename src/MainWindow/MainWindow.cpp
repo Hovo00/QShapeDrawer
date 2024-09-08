@@ -1,55 +1,64 @@
-#include <QApplication>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QWidget>
-#include <QPainter>
-#include <QDebug>
-#include <QVector>
-#include <QVBoxLayout>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QDialog>
+#include "MainWindow.hpp"
+#include "ToolBar.hpp"
 
-//** TO-DO create some env variable
-#include "src/shapes/shape.hpp"
-#include "src/canvas/canvas.hpp"
-#include "src/commandConsole/commandConsole.hpp"
-#include "src/LogWindow/LogWindow.hpp"
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 
-class MainWindow : public QWidget {
-    Q_OBJECT
-public:
-    MainWindow() {
-        connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
-        connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
-        connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
-        // Add the widgets to the layout
-        mainLayout.addWidget(&canvas);
-        mainLayout.addWidget(&logWindow);
-        mainLayout.addWidget(&commandConsole);
+MainWindow::MainWindow() {
+    ToolBar *toolbar = new ToolBar;
+    addToolBar(toolbar);
 
-        // Set the layout of the main window
-        setLayout(&mainLayout);
-    }
+    connect(toolbar, &ToolBar::fileActionTriggered, this, &MainWindow::onFileAction);
+    connect(toolbar, &ToolBar::helpActionTriggered, this, &MainWindow::onHelpAction);
+    toolbar->setMinimumSize(100, 20);
 
-private:
-    QVBoxLayout mainLayout;
-    Canvas canvas;
-    CommandConsole commandConsole;
-    LogWindow logWindow;
-};
 
-int main(int argc, char **argv)
-{
-    QApplication app(argc, argv);
+    QWidget *centralWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
-    MainWindow main;
-    Canvas canvas;
+    connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
+    connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
+    connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
-    main.show();
+    // Add the widgets to the layout
+    mainLayout->addWidget(&canvas);
+    mainLayout->addWidget(&logWindow);
+    mainLayout->addWidget(&commandConsole);
 
-    return app.exec();
+    // Set the layout of the central widget
+    centralWidget->setLayout(mainLayout);
+
+    // Set the central widget of the main window
+    setCentralWidget(centralWidget);
 }
 
-#include "MainWindow.moc"
+void MainWindow::onFileAction() {
+    qDebug() << "File action triggered";
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files (*)"));
+
+    if (!fileName.isEmpty()) {
+        qDebug() << "User selected file:" << fileName;
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "Failed to open file";
+            return;
+        }
+
+        QTextStream in(&file);
+        QString fileContent = in.readAll();
+        qDebug() << "File content:" << fileContent;
+
+        file.close();
+    } else {
+        qDebug() << "User did not select a file";
+    }
+}
+
+void MainWindow::onHelpAction() {
+    qDebug() << "Help action triggered";
+    // logic for the Help action here
+};

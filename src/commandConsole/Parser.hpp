@@ -14,12 +14,13 @@ public:
 private:
     QPointF parsePoint(const QString& point);
     QString parseName(const QString& token);
+    QVector<QString> tokenizeCommand(const QString& command);
 private:
-    ShapeInfo parseLine(const QStringList& tokens);
-    ShapeInfo parseTriangle(const QStringList& tokens);
-    ShapeInfo parseRectangle(const QStringList& tokens);
-    ShapeInfo parseSquare(const QStringList& tokens);
-    ShapeInfo parseConnect(const QStringList& tokens);
+    ShapeInfo parseLine(const QVector<QString>& tokens);
+    ShapeInfo parseTriangle(const QVector<QString>& tokens);
+    ShapeInfo parseRectangle(const QVector<QString>& tokens);
+    ShapeInfo parseSquare(const QVector<QString>& tokens);
+    ShapeInfo parseConnect(const QVector<QString>& tokens);
 };
 
 #endif // PARSER_HPP
