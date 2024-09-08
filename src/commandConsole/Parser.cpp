@@ -1,8 +1,9 @@
 #include "Parser.hpp"
 
 ShapeInfo Parser::parseCommand(const QString& command) {
+    qDebug() << "command:" << command;
     QStringList tokens = command.split(' ');
-
+    qDebug() << "Tokens:" << tokens;
     if (tokens[0] == "create_line") {
         return parseLine(tokens);
     } else if (tokens[0] == "create_triangle") {
@@ -12,6 +13,9 @@ ShapeInfo Parser::parseCommand(const QString& command) {
     }
     else if (tokens[0] == "create_square") {
         return parseSquare(tokens);
+    }
+    else if (tokens[0] == "connect") {
+        return parseConnect(tokens);
     }
     else {
         return ShapeInfo();
@@ -25,20 +29,20 @@ QPointF Parser::parsePoint(const QString& point) {
     // qDebug() << "trimmed" << coords[0].trimmed();
     return QPointF(coords[0].trimmed().toDouble(), coords[1].trimmed().toDouble());
 }
+QString Parser::parseName(const QString& token) {
+    QString cleaned = token.mid(1, token.size() - 2);  // Remove the braces
+    return cleaned;
+}
 
 ShapeInfo Parser::parseLine(const QStringList& tokens) {
-    qDebug() << " tokens ";
-    for (auto & str : tokens) {
-        qDebug() << str;
-    }
-    QString name = tokens[2];
+    QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     return {"line", name, QVector<QPointF>{coord1, coord2}};
 }
 
 ShapeInfo Parser::parseTriangle(const QStringList& tokens) {
-    QString name = tokens[2];
+    QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     QPointF coord3 = parsePoint(tokens[8]);
@@ -46,7 +50,7 @@ ShapeInfo Parser::parseTriangle(const QStringList& tokens) {
 }
 
 ShapeInfo Parser::parseRectangle(const QStringList& tokens) {
-    QString name = tokens[2];
+    QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     if (tokens.size() > 7) {
@@ -59,7 +63,7 @@ ShapeInfo Parser::parseRectangle(const QStringList& tokens) {
 }
 
 ShapeInfo Parser::parseSquare(const QStringList& tokens) {
-    QString name = tokens[2];
+    QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     if (tokens.size() > 7) {
@@ -69,4 +73,11 @@ ShapeInfo Parser::parseSquare(const QStringList& tokens) {
     } else {
         return {"square", name, QVector<QPointF>{coord1, coord2}};
     }
+}
+
+ShapeInfo Parser::parseConnect(const QStringList& tokens) {
+    QString objectName1 = parseName(tokens[2]);
+    QString objectName2 = parseName(tokens[4]);
+    QString name = objectName1 + " " + objectName2;
+    return {"connect", name};
 }

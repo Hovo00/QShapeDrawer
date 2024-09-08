@@ -2,6 +2,10 @@
 
 Shape::Shape(const ShapeInfo &info) : shapeInfo(info) {}
 
+QString Shape::getName() {
+    return shapeInfo.name;
+}
+
 Line::Line(const ShapeInfo &info) : Shape(info) {}
 
 void Line::draw(QPainter* painter) {
@@ -9,6 +13,10 @@ void Line::draw(QPainter* painter) {
     painter->setPen(Qt::red);
     painter->drawLine(shapeInfo.coordinates[0].x(), shapeInfo.coordinates[0].y(),
                       shapeInfo.coordinates[1].x(), shapeInfo.coordinates[1].y());
+}
+
+QPointF Line::center() const {
+    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
 }
 
 Triangle::Triangle(const ShapeInfo &info) : Shape(info) {}
@@ -21,6 +29,10 @@ void Triangle::draw(QPainter* painter) {
              << shapeInfo.coordinates[1].toPoint()
              << shapeInfo.coordinates[2].toPoint();
     painter->drawPolygon(triangle);
+}
+
+QPointF Triangle::center() const {
+    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1] + shapeInfo.coordinates[2]) / 3;
 }
 
 Rectangle::Rectangle(const ShapeInfo &info) : Shape(info) {}
@@ -47,6 +59,10 @@ void Rectangle::draw(QPainter* painter) {
     }
 }
 
+QPointF Rectangle::center() const {
+    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
+}
+
 Square::Square(const ShapeInfo &info) : Shape(info) {}
 
 void Square::draw(QPainter* painter) {
@@ -69,4 +85,8 @@ void Square::draw(QPainter* painter) {
         QRect rect(topLeftX, topLeftY, bottomRightX - topLeftX, bottomRightY - topLeftY);
         painter->drawRect(rect);
     }
+}
+
+QPointF Square::center() const {
+    return (shapeInfo.coordinates[0] + shapeInfo.coordinates[1]) / 2;
 }

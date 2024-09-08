@@ -11,13 +11,15 @@
 class Parser {
 public:
     ShapeInfo parseCommand(const QString& command);
-
 private:
     QPointF parsePoint(const QString& point);
+    QString parseName(const QString& token);
+private:
     ShapeInfo parseLine(const QStringList& tokens);
     ShapeInfo parseTriangle(const QStringList& tokens);
     ShapeInfo parseRectangle(const QStringList& tokens);
     ShapeInfo parseSquare(const QStringList& tokens);
+    ShapeInfo parseConnect(const QStringList& tokens);
 };
 
 #endif // PARSER_HPP

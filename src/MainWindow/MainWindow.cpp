@@ -14,22 +14,20 @@
 #include "src/shapes/shape.hpp"
 #include "src/canvas/canvas.hpp"
 #include "src/commandConsole/commandConsole.hpp"
+#include "src/LogWindow/LogWindow.hpp"
 
 class MainWindow : public QWidget {
     Q_OBJECT
 public:
     MainWindow() {
-        // canvas.setFixedSize(500, 500);  // Set a fixed size
-        // canvas.addShape(new Line());
-        // canvas.addShape(new Triangle());
         connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
-        // Set up the log window
-        logWindow.setReadOnly(true);
+        connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
+        connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
         // Add the widgets to the layout
         mainLayout.addWidget(&canvas);
-        mainLayout.addWidget(&commandConsole);
         mainLayout.addWidget(&logWindow);
+        mainLayout.addWidget(&commandConsole);
 
         // Set the layout of the main window
         setLayout(&mainLayout);
@@ -39,7 +37,7 @@ private:
     QVBoxLayout mainLayout;
     Canvas canvas;
     CommandConsole commandConsole;
-    QTextEdit logWindow;
+    LogWindow logWindow;
 };
 
 int main(int argc, char **argv)
