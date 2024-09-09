@@ -9,7 +9,7 @@ CommandConsole::CommandConsole(QWidget *parent) : QLineEdit(parent) {
 
 void CommandConsole::handleCommand() {
     QString command = text();
-    ShapeInfo info = parser.parseCommand(command);
+    ShapeInfo info = Parser::parseCommand(command);
     // emit syntaxError("there was some syntax error");
     emit commandParsed(info);
     clear();

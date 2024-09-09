@@ -4,15 +4,14 @@
 #include <QToolBar>
 #include <QAction>
 
+#include "src/shapes/shape.hpp"
+
 class ToolBar : public QToolBar {
     Q_OBJECT
 public:
     ToolBar();
-
 signals:
-    void fileActionTriggered();
-    void helpActionTriggered();
-
+    void commandParsed(const ShapeInfo &info);
 private slots:
     void onFileActionTriggered();
     void onHelpActionTriggered();
