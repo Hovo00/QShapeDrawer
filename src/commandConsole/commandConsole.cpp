@@ -16,7 +16,7 @@ void CommandConsole::handleCommand() {
         ShapeInfo info = Parser::parseCommand(command);
         emit commandParsed(info);
     } catch (const std::exception& excep) {
-        emit unknownFlag(excep.what());
+        emit syntaxError(excep.what());
     }
     clear();
 }

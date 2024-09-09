@@ -43,44 +43,77 @@ ShapeInfo Parser::parseCommand(const QString& command) {
 }
 
 QPointF Parser::parsePoint(const QString& point) {
+    QString cleanedPoint = point.simplified(); // Remove extra spaces and newline characters
     QString xCoord = "";
     QString yCoord = "";
     bool commaEncountered = false;
-    for (int i = 0; i < point.length(); ++i) {
-        if (point[i] == '{' || point[i] == '}' || point[i] == ' ') {
+    int commaCount = 0;
+    int braceCount = 0;
+
+    if (cleanedPoint.isEmpty() || cleanedPoint[0] != '{' || cleanedPoint[cleanedPoint.size() - 1] != '}') {
+        throw SyntaxError("Coordinates should start with '{' and end with '}' : " + cleanedPoint.toStdString());
+    }
+
+    for (int i = 0; i < cleanedPoint.length(); ++i) {
+        QChar ch = cleanedPoint[i];
+        if (!isAllowedInCoordinates(ch)) {
+            throw SyntaxError("Invalid character in coordinates: " + cleanedPoint.toStdString());
+        }
+        if (ch == '{' || ch == '}') {
+            braceCount++;
+            if (braceCount > 2) {
+                throw SyntaxError("Multiple braces in coordinates: " + cleanedPoint.toStdString());
+            }
             continue;
         }
-        if (point[i] == ',') {
+        if (ch == ',') {
+            commaCount++;
+            if (commaCount > 1) {
+                throw SyntaxError("Multiple commas in coordinates");
+            }
             commaEncountered = true;
             continue;
         }
         if (!commaEncountered) {
-            xCoord += point[i];
+            xCoord += ch;
         } else {
-            yCoord += point[i];
+            yCoord += ch;
         }
     }
+
+    if (xCoord.isEmpty() || yCoord.isEmpty()) {
+        throw SyntaxError("Coordinates are incomplete : " + cleanedPoint.toStdString());
+    }
+
     return QPointF(xCoord.toDouble(), yCoord.toDouble());
 }
 
+bool Parser::isAllowedInCoordinates(QChar ch) {
+    return ch.isDigit() || ch == '.' || ch == ',' || ch == '{' || ch == '}';
+}
+
 QString Parser::parseName(const QString& token) {
+    QString cleanedToken = token.simplified(); // Remove extra spaces and newline characters
     QString name = "";
     bool insideBraces = false;
-    for (int i = 0; i < token.length(); ++i) {
-        // if (token[i] == ' ') {
-        //     throw SyntaxError("shape name can't contain spaces : '" + name.toStdString() + "'");
-        // }
-        if (token[i] == '{') {
+
+    for (int i = 0; i < cleanedToken.length(); ++i) {
+        if (cleanedToken[i] == '{') {
             insideBraces = true;
             continue;
         }
-        if (token[i] == '}') {
+        if (cleanedToken[i] == '}') {
             break;
         }
         if (insideBraces) {
-            name += token[i];
+            name += cleanedToken[i];
         }
     }
+
+    if (name.isEmpty()) {
+        throw SyntaxError("Shape name can't be empty : " + cleanedToken.toStdString() + " <---");
+    }
+
     return name;
 }
 

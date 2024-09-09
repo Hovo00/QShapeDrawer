@@ -17,8 +17,7 @@ LogWindow::LogWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void LogWindow::handleDublicateNameError(const QString& previousShapeType, const QString& shapeName) {
-    logArea->setTextColor(Qt::red);
-    logMessage("Failed to execute command: Shape of type {" + previousShapeType + "} was previously defined with that name {" + shapeName + "}");
+    logPlainMessage("Shape of type {" + previousShapeType + "} was previously defined with that name {" + shapeName + "}");
 }
 
 void LogWindow::printCurrentCommand(const QString& command) {
@@ -26,14 +25,8 @@ void LogWindow::printCurrentCommand(const QString& command) {
     logMessage("Executing command '" + command + "'");
 }
 
-void LogWindow::handleUnknownFlag(const QString& what) {
-    logMessage("");
-    logArea->setTextColor(Qt::red);
-    logArea->insertPlainText("Failed to execute command: ");
-
-    // Set the text color back to black for the 'what' message
-    logArea->setTextColor(Qt::black);
-    logArea->insertPlainText(what);
+void LogWindow::handleSyntaxError(const QString& what) {
+    logPlainMessage(what);
 }
 
 void LogWindow::handleOutOfCanvasError(const QString &message) {
@@ -41,11 +34,23 @@ void LogWindow::handleOutOfCanvasError(const QString &message) {
     logMessage(message);
 }
 
-void LogWindow::logMessage(const QString &message) {
-    logArea->append(message);
+void LogWindow::handleNameNotFound(const QString& name) {
+    logPlainMessage("Shape with name '" + name + "' not exists ");
 }
 
 void LogWindow::handleCommandSuccess() {
     logArea->setTextColor(Qt::green);
     logMessage("success");
+}
+
+void LogWindow::logMessage(const QString &message) {
+    logArea->append(message);
+}
+
+void LogWindow::logPlainMessage(const QString &message) {
+    logArea->setTextColor(Qt::red);
+    logArea->append("Failed to execute command: ");
+
+    logArea->setTextColor(Qt::black);
+    logArea->append(message);
 }

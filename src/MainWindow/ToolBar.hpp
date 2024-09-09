@@ -13,7 +13,7 @@ public:
 signals:
     void commandParsed(const ShapeInfo &info);
     void commandEntered(const QString& command);
-    void unknownFlag(const QString& command);
+    void syntaxError(const QString& command);
 private slots:
     void onFileActionTriggered();
     void onHelpActionTriggered();

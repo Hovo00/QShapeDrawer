@@ -16,9 +16,10 @@ public slots:
     void paintEvent(QPaintEvent *event) override;
 signals:
     void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
+    void shapeNotFound(const QString& name);
     void drawSuccess();
 private:
-    void connectShapes(const QString& shape_name1, const QString& shape_name2);
+    void connectShapes(const QString& shape1_name, const QString& shape2_name);
     Shape* findShape(const QString& shape_name);
     // Refactor to use unordered_map 
     QVector<Shape*> shapes;

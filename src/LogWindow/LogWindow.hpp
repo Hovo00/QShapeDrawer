@@ -10,13 +10,16 @@ class LogWindow : public QWidget {
     Q_OBJECT
 public:
     LogWindow(QWidget *parent = nullptr);
-    void logMessage(const QString &message);
 public slots:
+    void handleCommandSuccess();
     void printCurrentCommand(const QString& command);
     void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
-    void handleUnknownFlag(const QString& what);
-    void handleCommandSuccess();
+    void handleSyntaxError(const QString& what);
+    void handleNameNotFound(const QString& name);
     void handleOutOfCanvasError(const QString& );
+private:
+    void logMessage(const QString &message);
+    void logPlainMessage(const QString &message);
 private:
     QLabel *title;
     QTextEdit *logArea;

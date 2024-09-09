@@ -38,6 +38,7 @@ void Canvas::addShape(const ShapeInfo &info) {
         QString shapeName1 = shapeNames[0];
         QString shapeName2 = shapeNames[1];
         connectShapes(shapeName1, shapeName2);
+        return;
     }
     if (shape != nullptr) {
         shapes.append(shape);
@@ -46,21 +47,28 @@ void Canvas::addShape(const ShapeInfo &info) {
     }
 }
 
-void Canvas::connectShapes(const QString& shape_name1, const QString& shape_name2) {
+void Canvas::connectShapes(const QString& shape1_name, const QString& shape2_name) {
     QPointF centerOfFirstShape;
     QPointF centerOfSecondShape;
-    qDebug() << "shape_name1 = " << shape_name1 << "  shape_name2 = " << shape_name2;
+    qDebug() << "shape1_name = " << shape1_name << "  shape2_name = " << shape2_name;
 
     // To-do handle case when shape not found
-    auto shape1 = findShape(shape_name1);
-    auto shape2 = findShape(shape_name2);
+    auto shape1 = findShape(shape1_name);
+    auto shape2 = findShape(shape2_name);
     if (shape1 && shape2) {
         centerOfFirstShape = shape1->center();
         centerOfSecondShape = shape2->center();
-        qDebug() << "shape_name1 center = " << centerOfFirstShape << "  shape_name2 center= " << centerOfSecondShape;
+        shapes.append(new Line({"line", "", QVector<QPointF>{centerOfFirstShape, centerOfSecondShape}}));
+        update();
+        emit drawSuccess();
     }
-    shapes.append(new Line({"line", "", QVector<QPointF>{centerOfFirstShape, centerOfSecondShape}}));
-    update();
+    if (!shape1) {
+        emit shapeNotFound(shape1_name);
+    }
+    if (!shape2) {
+        qDebug() << " I reach here";
+        emit shapeNotFound(shape2_name);
+    }
 }
 
 Shape* Canvas::findShape(const QString& shape_name) {

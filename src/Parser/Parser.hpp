@@ -15,6 +15,7 @@ private:
     static QPointF parsePoint(const QString& point);
     static QString parseName(const QString& token);
     static QVector<QString> tokenizeCommand(const QString& command);
+    static bool isAllowedInCoordinates(QChar ch);
 private:
     static ShapeInfo parseLine(const QVector<QString>& tokens);
     static ShapeInfo parseTriangle(const QVector<QString>& tokens);

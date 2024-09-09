@@ -35,7 +35,7 @@ void ToolBar::onFileActionTriggered() {
                 // If parsing was successful without exceptions, emit the commandParsed signal
                 emit commandParsed(result);
             } catch (const std::exception& excep) {
-                emit unknownFlag(excep.what());
+                emit syntaxError(excep.what());
             }
         }
 
