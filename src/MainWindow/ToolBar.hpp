@@ -12,6 +12,8 @@ public:
     ToolBar();
 signals:
     void commandParsed(const ShapeInfo &info);
+    void commandEntered(const QString& command);
+    void unknownCommand(const QString& command);
 private slots:
     void onFileActionTriggered();
     void onHelpActionTriggered();

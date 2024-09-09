@@ -42,6 +42,7 @@ void Canvas::addShape(const ShapeInfo &info) {
     if (shape != nullptr) {
         shapes.append(shape);
         update();
+        emit drawSuccess();
     }
 }
 

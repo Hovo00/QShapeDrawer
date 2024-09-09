@@ -11,14 +11,13 @@ CommandConsole::CommandConsole(QWidget *parent) : QLineEdit(parent) {
 void CommandConsole::handleCommand() {
     QString command = text();
     emit commandEntered(command);
+
     try {
         ShapeInfo info = Parser::parseCommand(command);
+        emit commandParsed(info);
+    } catch (const std::exception& excep) {
+        emit unknownCommand(excep.what());
     }
-    catch (const std::exception& excep) {
-        qDebug() << "esim";
-        emit syntaxError(excep.what());
-    }
-    // emit commandParsed(info);
     clear();
 }
 

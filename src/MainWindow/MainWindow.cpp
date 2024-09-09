@@ -17,11 +17,16 @@ MainWindow::MainWindow() {
 
     connect(&commandConsole, &CommandConsole::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
     connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
-    connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
+    connect(&commandConsole, &CommandConsole::unknownCommand, &logWindow, &LogWindow::handleUnknownCommand);
     // connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
     connect(&canvas, &Canvas::dublicateNameFound, &logWindow, &LogWindow::handleDublicateNameError);
+    connect(&canvas, &Canvas::drawSuccess, &logWindow, &LogWindow::handleCommandSuccess);
+
     connect(toolbar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
+    connect(toolbar, &ToolBar::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
+    connect(toolbar, &ToolBar::unknownCommand, &logWindow, &LogWindow::handleUnknownCommand);
+
 
     // Add the widgets to the layout
     mainLayout->addWidget(&canvas);

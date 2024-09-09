@@ -16,6 +16,7 @@ public slots:
     void paintEvent(QPaintEvent *event) override;
 signals:
     void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
+    void drawSuccess();
 private:
     void connectShapes(const QString& shape_name1, const QString& shape_name2);
     Shape* findShape(const QString& shape_name);

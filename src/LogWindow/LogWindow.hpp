@@ -14,7 +14,8 @@ public:
 public slots:
     void printCurrentCommand(const QString& command);
     void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
-    void handleSyntaxError(const QString& what);
+    void handleUnknownCommand(const QString& what);
+    void handleCommandSuccess();
     void handleOutOfCanvasError(const QString& );
 private:
     QLabel *title;

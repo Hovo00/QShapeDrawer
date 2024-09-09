@@ -2,6 +2,7 @@
 #include "src/Parser/Parser.hpp"
 #include <QDebug>
 #include <QFileDialog>
+#include <exception>
 
 ToolBar::ToolBar() {
     QAction *fileAction = addAction("File");
@@ -28,9 +29,14 @@ void ToolBar::onFileActionTriggered() {
         QTextStream in(&file);
         while (!in.atEnd()) {
             QString line = in.readLine();
-            qDebug() << "Line content:" << line;
-            auto result = Parser::parseCommand(line); // Assuming parse() returns a bool
-            emit commandParsed(result);
+            emit commandEntered(line);
+            try {
+                auto result = Parser::parseCommand(line);
+                // If parsing was successful without exceptions, emit the commandParsed signal
+                emit commandParsed(result);
+            } catch (const std::exception& excep) {
+                emit unknownCommand(excep.what());
+            }
         }
 
         file.close();

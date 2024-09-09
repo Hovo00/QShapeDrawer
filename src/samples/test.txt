@@ -1,5 +1,5 @@
-create_square -name {line_1} -coord_1 {50,50} -coord_2 {300,500}
+create_squar -name {line_1} -coord_1 {50,50} -coord_2 {300,500}
 create_line -name {line_1} -coord_1 {50,50} -coord_2 {300,500}
-create_triangle -name {triangle_1} -coord_1 {0,0} -coord_2 {10,0} -coord_3 {50,60}
+create_tringle -name {triangle_1} -coord_1 {0,0} -coord_2 {10,0} -coord_3 {50,60}
 create_rectangle -name {rect_1} -coord_1 {18,18} -coord_2 {60,60}
 connect -object_name_1 {rect_1} -object_name_2 {line_1}
