@@ -12,14 +12,16 @@ MainWindow::MainWindow() {
 
     toolbar->setMinimumSize(100, 20);
 
-
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
+    connect(&commandConsole, &CommandConsole::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
     connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
-    connect(toolbar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
     connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
-    connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
+    // connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
+
+    connect(&canvas, &Canvas::dublicateNameFound, &logWindow, &LogWindow::handleDublicateNameError);
+    connect(toolbar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
 
     // Add the widgets to the layout
     mainLayout->addWidget(&canvas);

@@ -1,4 +1,6 @@
 #include "Parser.hpp"
+#include "CustomExceptions/ParserExceptions.hpp"
+#include "src/Parser/CustomExceptions/ParserExceptions.hpp"
 
 QVector<QString> Parser::tokenizeCommand(const QString& command) {
     QVector<QString> tokens;
@@ -38,7 +40,8 @@ ShapeInfo Parser::parseCommand(const QString& command) {
         return parseConnect(tokens);
     }
     else {
-        return ShapeInfo();
+        qDebug() << " i am here ";
+        throw UnknownCommand();
     }
 }
 

@@ -20,6 +20,7 @@ public:
     virtual void draw(QPainter* painter) = 0;
     virtual QPointF center() const = 0;
     virtual QString getName();
+    virtual QString getShapeType();
 public:
     virtual ~Shape() = default;
 protected:

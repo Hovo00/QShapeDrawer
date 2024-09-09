@@ -1,5 +1,5 @@
 #include "ToolBar.hpp"
-#include "src/commandConsole/Parser.hpp"
+#include "src/Parser/Parser.hpp"
 #include <QDebug>
 #include <QFileDialog>
 

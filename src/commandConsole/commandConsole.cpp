@@ -1,4 +1,5 @@
 #include "commandConsole.hpp"
+#include "src/Parser/CustomExceptions/ParserExceptions.hpp"
 
 CommandConsole::CommandConsole(QWidget *parent) : QLineEdit(parent) {
     setPlaceholderText("Command Console");
@@ -9,9 +10,15 @@ CommandConsole::CommandConsole(QWidget *parent) : QLineEdit(parent) {
 
 void CommandConsole::handleCommand() {
     QString command = text();
-    ShapeInfo info = Parser::parseCommand(command);
-    // emit syntaxError("there was some syntax error");
-    emit commandParsed(info);
+    emit commandEntered(command);
+    try {
+        ShapeInfo info = Parser::parseCommand(command);
+    }
+    catch (const std::exception& excep) {
+        qDebug() << "esim";
+        emit syntaxError(excep.what());
+    }
+    // emit commandParsed(info);
     clear();
 }
 

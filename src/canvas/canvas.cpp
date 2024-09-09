@@ -15,6 +15,12 @@ QSize Canvas::sizeHint() const  {
 }
 
 void Canvas::addShape(const ShapeInfo &info) {
+    auto prevShape = findShape(info.name);
+    if (prevShape) {
+        dublicateNameFound(prevShape->getShapeType(), info.name);
+        return;
+    }
+
     Shape *shape = nullptr;
     qDebug() << "shape name is " << info.name << " ";
     if (info.shape_type == "line") {

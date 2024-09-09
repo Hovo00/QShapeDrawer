@@ -14,6 +14,8 @@ QSize sizeHint() const override;
 public slots:
     void addShape(const ShapeInfo &info);
     void paintEvent(QPaintEvent *event) override;
+signals:
+    void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
 private:
     void connectShapes(const QString& shape_name1, const QString& shape_name2);
     Shape* findShape(const QString& shape_name);

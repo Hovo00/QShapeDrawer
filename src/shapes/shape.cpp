@@ -6,6 +6,10 @@ QString Shape::getName() {
     return shapeInfo.name;
 }
 
+QString Shape::getShapeType() {
+    return shapeInfo.shape_type;
+}
+
 Line::Line(const ShapeInfo &info) : Shape(info) {}
 
 void Line::draw(QPainter* painter) {

@@ -4,7 +4,7 @@ QT += widgets
 QT += core gui
 
 HEADERS += src/commandConsole/commandConsole.hpp
-HEADERS += src/commandConsole/Parser.hpp
+HEADERS += src/Parser/Parser.hpp
 HEADERS += src/canvas/canvas.hpp
 HEADERS += src/LogWindow/LogWindow.hpp
 HEADERS += src/MainWindow/MainWindow.hpp
@@ -16,7 +16,10 @@ SOURCES += src/MainWindow/main.cpp
 SOURCES += src/shapes/shape.cpp
 SOURCES += src/canvas/canvas.cpp
 SOURCES += src/commandConsole/commandConsole.cpp
-SOURCES += src/commandConsole/Parser.cpp
+SOURCES += src/Parser/Parser.cpp
 SOURCES += src/LogWindow/LogWindow.cpp
+SOURCES += src/Parser/CustomExceptions/ParserExceptions.cpp
+
+
 
 
