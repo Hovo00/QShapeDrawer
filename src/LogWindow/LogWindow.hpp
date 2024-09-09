@@ -14,7 +14,7 @@ public:
 public slots:
     void printCurrentCommand(const QString& command);
     void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
-    void handleUnknownCommand(const QString& what);
+    void handleUnknownFlag(const QString& what);
     void handleCommandSuccess();
     void handleOutOfCanvasError(const QString& );
 private:

@@ -26,9 +26,14 @@ void LogWindow::printCurrentCommand(const QString& command) {
     logMessage("Executing command '" + command + "'");
 }
 
-void LogWindow::handleUnknownCommand(const QString& what) {
+void LogWindow::handleUnknownFlag(const QString& what) {
+    logMessage("");
     logArea->setTextColor(Qt::red);
-    logMessage("Failed to execute command: " + what);
+    logArea->insertPlainText("Failed to execute command: ");
+
+    // Set the text color back to black for the 'what' message
+    logArea->setTextColor(Qt::black);
+    logArea->insertPlainText(what);
 }
 
 void LogWindow::handleOutOfCanvasError(const QString &message) {

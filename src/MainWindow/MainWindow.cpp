@@ -17,7 +17,7 @@ MainWindow::MainWindow() {
 
     connect(&commandConsole, &CommandConsole::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
     connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
-    connect(&commandConsole, &CommandConsole::unknownCommand, &logWindow, &LogWindow::handleUnknownCommand);
+    connect(&commandConsole, &CommandConsole::unknownFlag, &logWindow, &LogWindow::handleUnknownFlag);
     // connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
     connect(&canvas, &Canvas::dublicateNameFound, &logWindow, &LogWindow::handleDublicateNameError);
@@ -25,7 +25,7 @@ MainWindow::MainWindow() {
 
     connect(toolbar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
     connect(toolbar, &ToolBar::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
-    connect(toolbar, &ToolBar::unknownCommand, &logWindow, &LogWindow::handleUnknownCommand);
+    connect(toolbar, &ToolBar::unknownFlag, &logWindow, &LogWindow::handleUnknownFlag);
 
 
     // Add the widgets to the layout

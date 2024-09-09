@@ -23,9 +23,7 @@ QVector<QString> Parser::tokenizeCommand(const QString& command) {
 }
 
 ShapeInfo Parser::parseCommand(const QString& command) {
-    qDebug() << "command " << command;
     auto tokens = tokenizeCommand(command);
-    qDebug() << "tokens" << tokens;
     if (tokens[0] == "create_line") {
         return parseLine(tokens);
     } else if (tokens[0] == "create_triangle") {
@@ -40,8 +38,7 @@ ShapeInfo Parser::parseCommand(const QString& command) {
         return parseConnect(tokens);
     }
     else {
-        qDebug() << " i am here ";
-        throw UnknownCommand();
+        throw UnknownFlag(tokens[0].toStdString());
     }
 }
 
@@ -70,9 +67,9 @@ QString Parser::parseName(const QString& token) {
     QString name = "";
     bool insideBraces = false;
     for (int i = 0; i < token.length(); ++i) {
-        if (token[i] == ' ') {
-            continue;
-        }
+        // if (token[i] == ' ') {
+        //     throw SyntaxError("shape name can't contain spaces : '" + name.toStdString() + "'");
+        // }
         if (token[i] == '{') {
             insideBraces = true;
             continue;
@@ -88,6 +85,9 @@ QString Parser::parseName(const QString& token) {
 }
 
 ShapeInfo Parser::parseLine(const QVector<QString>& tokens) {
+    if (tokens.size() < 7) {
+        throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
+    }
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
@@ -95,6 +95,9 @@ ShapeInfo Parser::parseLine(const QVector<QString>& tokens) {
 }
 
 ShapeInfo Parser::parseTriangle(const QVector<QString>& tokens) {
+    if (tokens.size() < 9) {
+        throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
+    }
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
@@ -103,6 +106,10 @@ ShapeInfo Parser::parseTriangle(const QVector<QString>& tokens) {
 }
 
 ShapeInfo Parser::parseRectangle(const QVector<QString>& tokens) {
+    if (tokens.size() < 7) {
+        throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
+    }
+
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
@@ -116,6 +123,10 @@ ShapeInfo Parser::parseRectangle(const QVector<QString>& tokens) {
 }
 
 ShapeInfo Parser::parseSquare(const QVector<QString>& tokens) {
+    if (tokens.size() < 7) {
+        throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
+    }
+
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);

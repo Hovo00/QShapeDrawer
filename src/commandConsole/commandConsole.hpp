@@ -14,6 +14,6 @@ public slots:
 signals:
     void commandParsed(const ShapeInfo& info);
     void commandEntered(const QString& command);
-    void unknownCommand(const QString& what);
+    void unknownFlag(const QString& what);
     void outOfCanvas(const QString &message);
 };
