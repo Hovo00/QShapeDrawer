@@ -1,14 +1,13 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include <QWidget>
 #include <QPainter>
 #include <QPointF>
 #include <QString>
 #include <QVector>
 
 struct ShapeInfo {
-    QString shape_type;
+    QString shapeType;
     QString name;
     QVector<QPointF> coordinates;
 };
@@ -19,6 +18,7 @@ public:
 public:
     virtual void draw(QPainter* painter) = 0;
     virtual QPointF center() const = 0;
+public:
     virtual QString getName();
     virtual QString getShapeType();
 public:

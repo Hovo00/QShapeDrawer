@@ -1,5 +1,6 @@
 #include "Parser.hpp"
-#include "CustomExceptions/ParserExceptions.hpp"
+
+#include "src/shapes/Shape.hpp"
 #include "src/Parser/CustomExceptions/ParserExceptions.hpp"
 
 QVector<QString> Parser::tokenizeCommand(const QString& command) {
@@ -24,18 +25,19 @@ QVector<QString> Parser::tokenizeCommand(const QString& command) {
 
 ShapeInfo Parser::parseCommand(const QString& command) {
     auto tokens = tokenizeCommand(command);
-    if (tokens[0] == "create_line") {
+    if (tokens[0] == "connect") {
+        return parseConnect(tokens);
+    }
+    else if (tokens[0] == "create_line") {
         return parseLine(tokens);
-    } else if (tokens[0] == "create_triangle") {
-        return parseTriangle(tokens);
-    } else if (tokens[0] == "create_rectangle") {
-        return parseRectangle(tokens);
     }
     else if (tokens[0] == "create_square") {
         return parseSquare(tokens);
     }
-    else if (tokens[0] == "connect") {
-        return parseConnect(tokens);
+    else if (tokens[0] == "create_triangle") {
+        return parseTriangle(tokens);
+    } else if (tokens[0] == "create_rectangle") {
+        return parseRectangle(tokens);
     }
     else {
         throw UnknownFlag(tokens[0].toStdString());
@@ -121,6 +123,10 @@ ShapeInfo Parser::parseLine(const QVector<QString>& tokens) {
     if (tokens.size() < 7) {
         throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
     }
+    if (tokens[1] != "-name" || tokens[3] != "-coord_1" || tokens[5] != "-coord_2") {
+        throw SyntaxError("Invalid syntax for '-' flags , should be '-name', '-coord{1-2}'");
+    }
+
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
@@ -130,6 +136,9 @@ ShapeInfo Parser::parseLine(const QVector<QString>& tokens) {
 ShapeInfo Parser::parseTriangle(const QVector<QString>& tokens) {
     if (tokens.size() < 9) {
         throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
+    }
+    if (tokens[1] != "-name" || tokens[3] != "-coord_1" || tokens[5] != "-coord_2" || tokens[7] != "coord_3") {
+        throw SyntaxError("Invalid syntax for '-' flags , should be '-name', '-coord{1-3}'");
     }
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
@@ -142,11 +151,17 @@ ShapeInfo Parser::parseRectangle(const QVector<QString>& tokens) {
     if (tokens.size() < 7) {
         throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
     }
+    if (tokens[1] != "-name" || tokens[3] != "-coord_1" || tokens[5] != "-coord_2") {
+        throw SyntaxError("Invalid syntax for '-' flags , should be '-name', '-coord{1-2}'");
+    }
 
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     if (tokens.size() > 7) {
+        if (tokens[7] != "-coord_3" || tokens[9] != "-coord_4") {
+            throw SyntaxError("Invalid syntax for '-' flags , should be '-name'. '-coord{1-4}'");
+        }
         QPointF coord3 = parsePoint(tokens[8]);
         QPointF coord4 = parsePoint(tokens[10]);
         return {"rectangle", name, QVector<QPointF>{coord1, coord2, coord3, coord4}};
@@ -159,11 +174,17 @@ ShapeInfo Parser::parseSquare(const QVector<QString>& tokens) {
     if (tokens.size() < 7) {
         throw IncompleteCommand((tokens[tokens.size() - 1]).toStdString());
     }
+    if (tokens[1] != "-name" || tokens[3] != "-coord_1" || tokens[5] != "-coord_2") {
+        throw SyntaxError("Invalid syntax for '-' flags , should be '-name', '-coord{1-2}'");
+    }
 
     QString name = parseName(tokens[2]);
     QPointF coord1 = parsePoint(tokens[4]);
     QPointF coord2 = parsePoint(tokens[6]);
     if (tokens.size() > 7) {
+        if (tokens[7] != "-coord_3" || tokens[9] != "-coord_4") {
+            throw SyntaxError("Invalid syntax for '-' flags , should be '-name'. '-coord{1-4}'");
+        }
         QPointF coord3 = parsePoint(tokens[8]);
         QPointF coord4 = parsePoint(tokens[10]);
         return {"square", name, QVector<QPointF>{coord1, coord2, coord3, coord4}};
@@ -173,6 +194,9 @@ ShapeInfo Parser::parseSquare(const QVector<QString>& tokens) {
 }
 
 ShapeInfo Parser::parseConnect(const QVector<QString>& tokens) {
+    if (tokens[1] != "-object_name_1" || tokens[3] != "-object_name_2") {
+        throw SyntaxError("Invalid syntax for '-' flags , should be 'object_name_{1-2}'");
+    }
     QString objectName1 = parseName(tokens[2]);
     QString objectName2 = parseName(tokens[4]);
     QString name = objectName1 + " " + objectName2;

@@ -2,29 +2,30 @@
 #define CANVAS_HPP
 
 #include <QWidget>
-#include <QSize>
 #include <QHash>
 
-#include "src/shapes/shape.hpp"
+#include "src/shapes/Shape.hpp"
 
 class Canvas : public QWidget {
     Q_OBJECT
 public:
     Canvas();
     ~Canvas();
+public:
     QSize sizeHint() const override;
 public slots:
     void addShape(const ShapeInfo &info);
     void paintEvent(QPaintEvent *event) override;
 signals:
-    void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
-    void shapeNotFound(const QString& name);
-    void outOfCanvas(const QString& name);
     void drawSuccess();
+    void outOfCanvas(const QString& name);
+    void shapeNotFound(const QString& name);
+    void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
 private:
     bool isWithinCanvas(const ShapeInfo &info);
-    void connectShapes(const QString& shape1_name, const QString& shape2_name);
-    Shape* findShape(const QString& shape_name);
+    Shape* findShape(const QString& shapeName);
+    void connectShapes(const QString& shapeName1, const QString& shapeName2);
+private:
     QHash<QString, Shape*> shapes;
 };
 

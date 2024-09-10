@@ -1,18 +1,17 @@
 #include "LogWindow.hpp"
-#include <QDebug>
 
 LogWindow::LogWindow(QWidget *parent) : QWidget(parent) {
     layout = new QVBoxLayout(this);
-
     title = new QLabel("LOG", this);
+
     title->setStyleSheet("background-color: black; color: white;");
     layout->addWidget(title);
 
     logArea = new QTextEdit(this);
     logArea->setStyleSheet("background-color: white; color: black;");
-    logArea->setReadOnly(true); // Make the text area read-only
-    layout->addWidget(logArea);
+    logArea->setReadOnly(true);
 
+    layout->addWidget(logArea);
     setLayout(layout);
 }
 
@@ -25,16 +24,12 @@ void LogWindow::printCurrentCommand(const QString& command) {
     logMessage("Executing command '" + command + "'");
 }
 
-void LogWindow::handleSyntaxError(const QString& what) {
-    logColoredMessage(what);
-}
-
 void LogWindow::handleOutOfCanvasError(const QString &shapeName) {
     logColoredMessage("Coordinates of '" + shapeName + "' out of Canvas dimension");
 }
 
-void LogWindow::handleNameNotFound(const QString& name) {
-    logColoredMessage("Shape with name '" + name + "' not exists ");
+void LogWindow::handleNameNotFound(const QString& shapeName) {
+    logColoredMessage("Shape with name '" + shapeName + "' not exists ");
 }
 
 void LogWindow::handleCommandSuccess() {
@@ -52,4 +47,8 @@ void LogWindow::logColoredMessage(const QString &message) {
 
     logArea->setTextColor(Qt::black);
     logArea->append(message);
+}
+
+void LogWindow::handleSyntaxError(const QString& what) {
+    logColoredMessage(what);
 }

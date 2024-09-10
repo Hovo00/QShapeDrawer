@@ -1,4 +1,4 @@
-#include "shape.hpp"
+#include "Shape.hpp"
 
 Shape::Shape(const ShapeInfo &info) : shapeInfo(info) {}
 
@@ -7,7 +7,7 @@ QString Shape::getName() {
 }
 
 QString Shape::getShapeType() {
-    return shapeInfo.shape_type;
+    return shapeInfo.shapeType;
 }
 
 Line::Line(const ShapeInfo &info) : Shape(info) {}

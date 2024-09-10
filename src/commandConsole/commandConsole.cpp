@@ -1,11 +1,13 @@
 #include "commandConsole.hpp"
+
+#include "src/Parser/Parser.hpp"
 #include "src/Parser/CustomExceptions/ParserExceptions.hpp"
 
 CommandConsole::CommandConsole(QWidget *parent) : QLineEdit(parent) {
     setPlaceholderText("Command Console");
-    connect(this, &QLineEdit::returnPressed, this, &CommandConsole::handleCommand);
-
     setStyleSheet("background-color: white; color: black;");
+
+    connect(this, &QLineEdit::returnPressed, this, &CommandConsole::handleCommand);
 }
 
 void CommandConsole::handleCommand() {
@@ -22,5 +24,5 @@ void CommandConsole::handleCommand() {
 }
 
 QSize CommandConsole::sizeHint() const  {
-    return QSize(1000, 10);  // Return a suitable size
+    return QSize(1000, 10);
 }

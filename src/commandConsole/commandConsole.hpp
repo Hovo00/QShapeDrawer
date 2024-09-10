@@ -1,8 +1,7 @@
 #include <QLineEdit>
 #include <QWidget>
-#include <QDebug>
 
-#include "src/Parser/Parser.hpp"
+#include "src/shapes/Shape.hpp"
 
 class CommandConsole : public QLineEdit {
     Q_OBJECT
@@ -12,7 +11,7 @@ public slots:
     void handleCommand();
     QSize sizeHint() const override;
 signals:
+    void syntaxError(const QString& what);
     void commandParsed(const ShapeInfo& info);
     void commandEntered(const QString& command);
-    void syntaxError(const QString& what);
 };

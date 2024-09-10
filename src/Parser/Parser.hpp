@@ -2,11 +2,9 @@
 #define PARSER_HPP
 
 #include <QString>
-#include <QDebug>
-
-#include <QStringList>
 #include <QPointF>
-#include "src/shapes/shape.hpp"
+
+#include "src/shapes/Shape.hpp"
 
 class Parser {
 public:
@@ -15,13 +13,14 @@ private:
     static QPointF parsePoint(const QString& point);
     static QString parseName(const QString& token);
     static QVector<QString> tokenizeCommand(const QString& command);
-    static bool isAllowedInCoordinates(QChar ch);
 private:
     static ShapeInfo parseLine(const QVector<QString>& tokens);
     static ShapeInfo parseTriangle(const QVector<QString>& tokens);
     static ShapeInfo parseRectangle(const QVector<QString>& tokens);
     static ShapeInfo parseSquare(const QVector<QString>& tokens);
     static ShapeInfo parseConnect(const QVector<QString>& tokens);
+private:
+    static bool isAllowedInCoordinates(QChar ch);
 };
 
 #endif // PARSER_HPP

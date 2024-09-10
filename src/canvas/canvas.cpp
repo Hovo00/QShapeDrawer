@@ -1,6 +1,5 @@
-#include "canvas.hpp"
+#include "Canvas.hpp"
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopWidget>
 
 Canvas::Canvas() {
@@ -11,11 +10,11 @@ Canvas::Canvas() {
 }
 
 QSize Canvas::sizeHint() const  {
-    return QSize(1000, 1000);  // Return a suitable size
+    return QSize(1000, 1000);  
 }
 
 bool Canvas::isWithinCanvas(const ShapeInfo &info) {
-    // Check if all points are within the canvas
+    // Check if all points are within the Canvas
     for (const QPointF &point : info.coordinates) {
         if (point.x() < 0 || point.x() > this->width() || point.y() < 0 || point.y() > this->height()) {
             return false;
@@ -30,23 +29,23 @@ void Canvas::addShape(const ShapeInfo &info) {
         dublicateNameFound(prevShape->getShapeType(), info.name);
         return;
     }
-    if (info.shape_type != "connect" && !isWithinCanvas(info)) {
+    if (info.shapeType != "connect" && !isWithinCanvas(info)) {
         emit outOfCanvas(info.name);
         return;
     }
 
     Shape *shape = nullptr;
-    if (info.shape_type == "line") {
+    if (info.shapeType == "line") {
         shape = new Line(info);
-    } else if (info.shape_type == "triangle") {
+    } else if (info.shapeType == "triangle") {
         shape = new Triangle(info);
-    } else if (info.shape_type == "rectangle") {
+    } else if (info.shapeType == "rectangle") {
         shape = new Rectangle(info);
     }
-    else if (info.shape_type == "square") {
+    else if (info.shapeType == "square") {
         shape = new Square(info);
     }
-    if (info.shape_type == "connect") {
+    if (info.shapeType == "connect") {
         QStringList shapeNames = info.name.split(' ');
         QString shapeName1 = shapeNames[0];
         QString shapeName2 = shapeNames[1];
@@ -60,14 +59,12 @@ void Canvas::addShape(const ShapeInfo &info) {
     }
 }
 
-void Canvas::connectShapes(const QString& shape1_name, const QString& shape2_name) {
+void Canvas::connectShapes(const QString& shapeName1, const QString& shapeName2) {
     QPointF centerOfFirstShape;
     QPointF centerOfSecondShape;
-    qDebug() << "shape1_name = " << shape1_name << "  shape2_name = " << shape2_name;
 
-    // To-do handle case when shape not found
-    auto shape1 = findShape(shape1_name);
-    auto shape2 = findShape(shape2_name);
+    auto shape1 = findShape(shapeName1);
+    auto shape2 = findShape(shapeName2);
     if (shape1 && shape2) {
         centerOfFirstShape = shape1->center();
         centerOfSecondShape = shape2->center();
@@ -76,16 +73,15 @@ void Canvas::connectShapes(const QString& shape1_name, const QString& shape2_nam
         emit drawSuccess();
     }
     if (!shape1) {
-        emit shapeNotFound(shape1_name);
+        emit shapeNotFound(shapeName1);
     }
     if (!shape2) {
-        qDebug() << " I reach here";
-        emit shapeNotFound(shape2_name);
+        emit shapeNotFound(shapeName2);
     }
 }
 
-Shape* Canvas::findShape(const QString& shape_name) {
-    return shapes.value(shape_name, nullptr);
+Shape* Canvas::findShape(const QString& shapeName) {
+    return shapes.value(shapeName, nullptr);
 }
 
 void Canvas::paintEvent(QPaintEvent *event) {

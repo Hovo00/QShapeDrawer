@@ -1,20 +1,23 @@
 #include "MainWindow.hpp"
-#include "ToolBar.hpp"
-
-#include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
-
 
 MainWindow::MainWindow() {
-    ToolBar *toolbar = new ToolBar;
-    addToolBar(toolbar);
+    addToolBar(&toolBar);
+    connectSlotsAndSignals();
 
-    toolbar->setMinimumSize(100, 20);
+    toolBar.setMinimumSize(100, 20);
 
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
+    mainLayout->addWidget(&canvas);
+    mainLayout->addWidget(&logWindow);
+    mainLayout->addWidget(&commandConsole);
+
+    centralWidget->setLayout(mainLayout);
+    setCentralWidget(centralWidget);
+}
+
+void MainWindow::connectSlotsAndSignals() {
     connect(&commandConsole, &CommandConsole::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
     connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
     connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
@@ -24,19 +27,7 @@ MainWindow::MainWindow() {
     connect(&canvas, &Canvas::shapeNotFound, &logWindow, &LogWindow::handleNameNotFound);
     connect(&canvas, &Canvas::drawSuccess, &logWindow, &LogWindow::handleCommandSuccess);
 
-    connect(toolbar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
-    connect(toolbar, &ToolBar::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
-    connect(toolbar, &ToolBar::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
-
-
-    // Add the widgets to the layout
-    mainLayout->addWidget(&canvas);
-    mainLayout->addWidget(&logWindow);
-    mainLayout->addWidget(&commandConsole);
-
-    // Set the layout of the central widget
-    centralWidget->setLayout(mainLayout);
-
-    // Set the central widget of the main window
-    setCentralWidget(centralWidget);
+    connect(&toolBar, &ToolBar::commandParsed, &canvas, &Canvas::addShape);
+    connect(&toolBar, &ToolBar::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
+    connect(&toolBar, &ToolBar::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
 }

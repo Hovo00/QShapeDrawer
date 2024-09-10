@@ -13,10 +13,11 @@ public:
 public slots:
     void handleCommandSuccess();
     void printCurrentCommand(const QString& command);
-    void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
+public slots:
     void handleSyntaxError(const QString& what);
-    void handleNameNotFound(const QString& name);
+    void handleNameNotFound(const QString& shapeName);
     void handleOutOfCanvasError(const QString& shapeName);
+    void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
 private:
     void logMessage(const QString &message);
     void logColoredMessage(const QString &message);
