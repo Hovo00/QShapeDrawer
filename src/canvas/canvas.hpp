@@ -1,7 +1,9 @@
 #ifndef CANVAS_HPP
 #define CANVAS_HPP
+
 #include <QWidget>
 #include <QSize>
+#include <QHash>
 
 #include "src/shapes/shape.hpp"
 
@@ -10,7 +12,7 @@ class Canvas : public QWidget {
 public:
     Canvas();
     ~Canvas();
-QSize sizeHint() const override;
+    QSize sizeHint() const override;
 public slots:
     void addShape(const ShapeInfo &info);
     void paintEvent(QPaintEvent *event) override;
@@ -23,8 +25,7 @@ private:
     bool isWithinCanvas(const ShapeInfo &info);
     void connectShapes(const QString& shape1_name, const QString& shape2_name);
     Shape* findShape(const QString& shape_name);
-    // Refactor to use unordered_map 
-    QVector<Shape*> shapes;
+    QHash<QString, Shape*> shapes;
 };
 
 #endif // CANVAS_HPP

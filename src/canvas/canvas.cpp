@@ -54,7 +54,7 @@ void Canvas::addShape(const ShapeInfo &info) {
         return;
     }
     if (shape != nullptr) {
-        shapes.append(shape);
+        shapes.insert(info.name, shape);
         update();
         emit drawSuccess();
     }
@@ -71,7 +71,7 @@ void Canvas::connectShapes(const QString& shape1_name, const QString& shape2_nam
     if (shape1 && shape2) {
         centerOfFirstShape = shape1->center();
         centerOfSecondShape = shape2->center();
-        shapes.append(new Line({"line", "", QVector<QPointF>{centerOfFirstShape, centerOfSecondShape}}));
+        shapes.insert("", new Line({"line", "", QVector<QPointF>{centerOfFirstShape, centerOfSecondShape}}));
         update();
         emit drawSuccess();
     }
@@ -85,12 +85,7 @@ void Canvas::connectShapes(const QString& shape1_name, const QString& shape2_nam
 }
 
 Shape* Canvas::findShape(const QString& shape_name) {
-    for (auto shape : shapes) {
-        if (shape->getName() == shape_name) {
-            return shape;
-        }
-    }
-    return nullptr;
+    return shapes.value(shape_name, nullptr);
 }
 
 void Canvas::paintEvent(QPaintEvent *event) {
@@ -102,7 +97,5 @@ void Canvas::paintEvent(QPaintEvent *event) {
 }
 
 Canvas::~Canvas() {
-    for (Shape* shape : shapes) {
-        delete shape;
-    }
+    qDeleteAll(shapes);
 }
