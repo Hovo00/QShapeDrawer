@@ -1,4 +1,4 @@
-#include "commandConsole.hpp"
+#include "CommandConsole.hpp"
 
 #include "src/Parser/Parser.hpp"
 #include "src/Parser/CustomExceptions/ParserExceptions.hpp"

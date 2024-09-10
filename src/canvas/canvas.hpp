@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QHash>
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 
 class Canvas : public QWidget {
     Q_OBJECT

@@ -4,11 +4,11 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 #include "src/Canvas/Canvas.hpp"
 #include "src/ToolBar/ToolBar.hpp"
 #include "src/LogWindow/LogWindow.hpp"
-#include "src/commandConsole/commandConsole.hpp"
+#include "src/CommandConsole/CommandConsole.hpp"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

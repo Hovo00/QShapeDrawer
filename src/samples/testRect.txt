@@ -1,4 +1,0 @@
-create_rectangle -name {rect_1} -coord_1 {18,18} -coord_2 {60,60}
-create_rectangle -name {rect_2} -coord_1 {18,18} -coord_2 {60,18} -coord_3 {60,60} -coord_4 {18,60}
-create_line -name {line_1} -coord_1 {18,18} -coord_2 {117,500}
-connect -object_name_1 {rect_1} -object_name_2 {line_1}

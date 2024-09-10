@@ -1,6 +1,6 @@
 #include "Parser.hpp"
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 #include "src/Parser/CustomExceptions/ParserExceptions.hpp"
 
 QVector<QString> Parser::tokenizeCommand(const QString& command) {

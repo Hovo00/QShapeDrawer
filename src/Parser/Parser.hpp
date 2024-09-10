@@ -4,7 +4,7 @@
 #include <QString>
 #include <QPointF>
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 
 class Parser {
 public:

@@ -4,7 +4,7 @@
 #include <QToolBar>
 #include <QAction>
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 
 class ToolBar : public QToolBar {
     Q_OBJECT

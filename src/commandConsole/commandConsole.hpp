@@ -1,7 +1,7 @@
 #include <QLineEdit>
 #include <QWidget>
 
-#include "src/shapes/Shape.hpp"
+#include "src/Shapes/Shape.hpp"
 
 class CommandConsole : public QLineEdit {
     Q_OBJECT
