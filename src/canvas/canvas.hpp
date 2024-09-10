@@ -17,8 +17,10 @@ public slots:
 signals:
     void dublicateNameFound(const QString& previousDefinedName, const QString& shapeName);
     void shapeNotFound(const QString& name);
+    void outOfCanvas(const QString& name);
     void drawSuccess();
 private:
+    bool isWithinCanvas(const ShapeInfo &info);
     void connectShapes(const QString& shape1_name, const QString& shape2_name);
     Shape* findShape(const QString& shape_name);
     // Refactor to use unordered_map 

@@ -16,10 +16,10 @@ public slots:
     void handleDublicateNameError(const QString& previousShapeType, const QString& shapeName);
     void handleSyntaxError(const QString& what);
     void handleNameNotFound(const QString& name);
-    void handleOutOfCanvasError(const QString& );
+    void handleOutOfCanvasError(const QString& shapeName);
 private:
     void logMessage(const QString &message);
-    void logPlainMessage(const QString &message);
+    void logColoredMessage(const QString &message);
 private:
     QLabel *title;
     QTextEdit *logArea;

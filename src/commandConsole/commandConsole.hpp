@@ -15,5 +15,4 @@ signals:
     void commandParsed(const ShapeInfo& info);
     void commandEntered(const QString& command);
     void syntaxError(const QString& what);
-    void outOfCanvas(const QString &message);
 };

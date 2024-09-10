@@ -14,15 +14,28 @@ QSize Canvas::sizeHint() const  {
     return QSize(1000, 1000);  // Return a suitable size
 }
 
+bool Canvas::isWithinCanvas(const ShapeInfo &info) {
+    // Check if all points are within the canvas
+    for (const QPointF &point : info.coordinates) {
+        if (point.x() < 0 || point.x() > this->width() || point.y() < 0 || point.y() > this->height()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Canvas::addShape(const ShapeInfo &info) {
     auto prevShape = findShape(info.name);
     if (prevShape) {
         dublicateNameFound(prevShape->getShapeType(), info.name);
         return;
     }
+    if (info.shape_type != "connect" && !isWithinCanvas(info)) {
+        emit outOfCanvas(info.name);
+        return;
+    }
 
     Shape *shape = nullptr;
-    qDebug() << "shape name is " << info.name << " ";
     if (info.shape_type == "line") {
         shape = new Line(info);
     } else if (info.shape_type == "triangle") {
@@ -33,7 +46,7 @@ void Canvas::addShape(const ShapeInfo &info) {
     else if (info.shape_type == "square") {
         shape = new Square(info);
     }
-    else if (info.shape_type == "connect") {
+    if (info.shape_type == "connect") {
         QStringList shapeNames = info.name.split(' ');
         QString shapeName1 = shapeNames[0];
         QString shapeName2 = shapeNames[1];

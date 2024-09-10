@@ -18,7 +18,7 @@ MainWindow::MainWindow() {
     connect(&commandConsole, &CommandConsole::commandEntered, &logWindow, &LogWindow::printCurrentCommand);
     connect(&commandConsole, &CommandConsole::commandParsed, &canvas, &Canvas::addShape);
     connect(&commandConsole, &CommandConsole::syntaxError, &logWindow, &LogWindow::handleSyntaxError);
-    // connect(&commandConsole, &CommandConsole::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
+    connect(&canvas, &Canvas::outOfCanvas, &logWindow, &LogWindow::handleOutOfCanvasError);
 
     connect(&canvas, &Canvas::dublicateNameFound, &logWindow, &LogWindow::handleDublicateNameError);
     connect(&canvas, &Canvas::shapeNotFound, &logWindow, &LogWindow::handleNameNotFound);

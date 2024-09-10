@@ -17,7 +17,7 @@ LogWindow::LogWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void LogWindow::handleDublicateNameError(const QString& previousShapeType, const QString& shapeName) {
-    logPlainMessage("Shape of type {" + previousShapeType + "} was previously defined with that name {" + shapeName + "}");
+    logColoredMessage("Shape of type {" + previousShapeType + "} was previously defined with that name {" + shapeName + "}");
 }
 
 void LogWindow::printCurrentCommand(const QString& command) {
@@ -26,16 +26,15 @@ void LogWindow::printCurrentCommand(const QString& command) {
 }
 
 void LogWindow::handleSyntaxError(const QString& what) {
-    logPlainMessage(what);
+    logColoredMessage(what);
 }
 
-void LogWindow::handleOutOfCanvasError(const QString &message) {
-    // Handle out of canvas error
-    logMessage(message);
+void LogWindow::handleOutOfCanvasError(const QString &shapeName) {
+    logColoredMessage("Coordinates of '" + shapeName + "' out of Canvas dimension");
 }
 
 void LogWindow::handleNameNotFound(const QString& name) {
-    logPlainMessage("Shape with name '" + name + "' not exists ");
+    logColoredMessage("Shape with name '" + name + "' not exists ");
 }
 
 void LogWindow::handleCommandSuccess() {
@@ -47,7 +46,7 @@ void LogWindow::logMessage(const QString &message) {
     logArea->append(message);
 }
 
-void LogWindow::logPlainMessage(const QString &message) {
+void LogWindow::logColoredMessage(const QString &message) {
     logArea->setTextColor(Qt::red);
     logArea->append("Failed to execute command: ");
 
